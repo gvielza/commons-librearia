@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -28,6 +29,13 @@ public class CommonController<E, S extends CommonService<E>> {
 	public ResponseEntity<?> listar() {
 		return ResponseEntity.ok().body(service.findAll());
 	}
+	//copio el listar para hacer el metodo paginable y cambiamos ruta, y todo automatico
+	//localhost:8090/api/alumnos/paginas?page=0&size=3 sería la ruta para acceder
+	@GetMapping("/paginas")
+	public ResponseEntity<?> listar(Pageable pageable) {
+		return ResponseEntity.ok().body(service.findAll(pageable));
+	}
+
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> ver(@PathVariable Long id) {
